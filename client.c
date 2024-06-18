@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:41:53 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/16 23:46:46 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/18 22:22:51 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ static int ch_to_sig(int pid, unsigned char c)
 		{
 			if (kill(pid, SIGUSR1) == -1)
 				return (-1);
-			if (usleep(100) == -1)
-				return (-1);
 		}
 		else
 		{
 			if (kill(pid, SIGUSR2) == -1)
 				return (-1);
-			if (usleep(100) == -1)
-				return (-1);
 		}
+		if (usleep(100) == -1)
+			return (-1);
 		i++;
 	}
 
