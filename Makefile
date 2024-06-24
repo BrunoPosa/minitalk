@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bposa <bposa@student.hive.fi>              +#+  +:+       +#+         #
+#    By: bposa <bposa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/16 16:32:58 by bposa             #+#    #+#              #
-#    Updated: 2024/06/16 22:02:02 by bposa            ###   ########.fr        #
+#    Updated: 2024/06/24 12:51:32 by bposa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ COBJCS	=	$(CSRCS:.c=.o)
 
 DEPS	=	minitalk.h
 
-LIBPATH	=	./libftprintf/
+LIBPATH	=	./libft/
 
-LIB		=	$(LIBPATH)libftprintf.a
+LIB		=	$(LIBPATH)libft.a
 
 # RULES:
 

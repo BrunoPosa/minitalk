@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bposa <bposa@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/17 00:01:42 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/24 13:46:10 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,32 @@
 // {
 	//maybe use like in GNL strjoin here, w/ malloc etc?
 // 	return ();
+
 // }
 
-//will I need static variable? or global? to track end of 8th signal
-char	sig_to_bin()
+void	sig_to_ch(int b)
 {
-	return ();
+	static unsigned char	c;
+
+	c = '\0';
+	if (++g_i < 8)
+		c = (c << 1) | b;
+	else
+	{
+		g_i = 0;
+		write(1, &c, 1);
+		c = '\0';
+	}
 }
 
 static void	my_sighandler(int signum)
 {
 	if (signum == SIGUSR1)
-		write(1, "\nSIGUSR1\n", 9);
+		sig_to_ch(1);
 	else if (signum == SIGUSR2)
-		write(1, "\nSIGUSR2\n", 9);
+		sig_to_ch(0);
 	else
-		write(1, "\nothersignal\n", 13);
+		return ;
 }
 
 int	main(void)
