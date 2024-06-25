@@ -6,41 +6,69 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/24 13:46:10 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/25 13:29:53 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-/*
-	sigusr1 => b = (b << 1) | 1;
-	sigusr2 => b = b << 1;
 
-	void	put_binary(int n)
-	{
-		if (n >= 2)
-			put_binary(n / 2);
-		write(1, &"01"[n % 2], 1);
-	}
-*/
-
-// char	*sig_parser(char *str, char c)
-// {
-	//maybe use like in GNL strjoin here, w/ malloc etc?
-// 	return ();
-
-// }
-
-void	sig_to_ch(int b)
+static void	end_all(char **s, int error)
 {
-	static unsigned char	c;
-
-	c = '\0';
-	if (++g_i < 8)
-		c = (c << 1) | b;
-	else
+	if (*s)
 	{
-		g_i = 0;
-		write(1, &c, 1);
+		free(*s);
+		*s = NULL;
+	}
+	s = NULL;
+	if (error == ERROR)
+	{
+		exit(1);
+	}
+}
+
+/*
+	printing garbage sometimes. Saved few lines using ft_strjoin(ft_strdup(""), &c) as param for line 55 [temp = strjoin]
+*/
+static void	str_maker(char c)
+{
+	static char	*str = NULL;
+	char		*temp;
+	char		ch_str[2];
+
+	temp = NULL;
+	ch_str[0] = c;
+	ch_str[1] = '\0';
+	if (!str)
+	{
+		str = ft_strdup("");
+		if (!str)
+			end_all(&str, ERROR);
+	}
+	if (c == '\0')
+	{
+		if (ft_printf("%s\n", str) == ERROR)
+			end_all(&str, ERROR);
+		free(str);
+		str = NULL;
+		return ;
+	}
+	temp = ft_strjoin(str, ch_str);
+	if (temp == NULL)
+		end_all(&str, ERROR);
+	str = temp;
+	temp = NULL;
+}
+
+static void	sig_to_ch(int b)
+{
+	static	int		i = 0;
+	static 	char	c = '\0';
+
+	c = (c << 1) | b;
+	if (++i == 8)
+	{
+		str_maker(c);
+		i = 0;
 		c = '\0';
 	}
 }
@@ -51,8 +79,6 @@ static void	my_sighandler(int signum)
 		sig_to_ch(1);
 	else if (signum == SIGUSR2)
 		sig_to_ch(0);
-	else
-		return ;
 }
 
 int	main(void)
