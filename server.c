@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/25 13:29:53 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 20:37:33 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,14 @@ static void	end_all(char **s, int error)
 	}
 }
 
-/*
-	printing garbage sometimes. Saved few lines using ft_strjoin(ft_strdup(""), &c) as param for line 55 [temp = strjoin]
-*/
 static void	str_maker(char c)
 {
 	static char	*str = NULL;
-	char		*temp;
 	char		ch_str[2];
 
-	temp = NULL;
 	ch_str[0] = c;
 	ch_str[1] = '\0';
-	if (!str)
+	if (str == NULL)
 	{
 		str = ft_strdup("");
 		if (!str)
@@ -48,15 +43,14 @@ static void	str_maker(char c)
 	{
 		if (ft_printf("%s\n", str) == ERROR)
 			end_all(&str, ERROR);
-		free(str);
+		if (str)
+			free(str);
 		str = NULL;
 		return ;
 	}
-	temp = ft_strjoin(str, ch_str);
-	if (temp == NULL)
+	str = ft_strjoin(str, ch_str);
+	if (str == NULL)
 		end_all(&str, ERROR);
-	str = temp;
-	temp = NULL;
 }
 
 static void	sig_to_ch(int b)
@@ -67,7 +61,7 @@ static void	sig_to_ch(int b)
 	c = (c << 1) | b;
 	if (++i == 8)
 	{
-		str_maker(c);
+		str_maker((char)c);
 		i = 0;
 		c = '\0';
 	}
@@ -83,19 +77,17 @@ static void	my_sighandler(int signum)
 
 int	main(void)
 {
-	int	pid;
 	struct sigaction sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &my_sighandler;
-	pid = getpid();
-	if (ft_printf("PID: %d\n", pid) == ERROR)
+	if (ft_printf("PID: %d\n", getpid()) == ERROR)
 		return (5);
-	if (sigaction(SIGUSR1, &sa, NULL) == -1)
-		return (-1);
-	if (sigaction(SIGUSR2, &sa, NULL) == -1)
-		return (-1);
+	if (sigaction(SIGUSR1, &sa, NULL) == ERROR)
+		return (ERROR);
+	if (sigaction(SIGUSR2, &sa, NULL) == ERROR)
+		return (ERROR);
 	while (1)
 		pause();
 	return (0);

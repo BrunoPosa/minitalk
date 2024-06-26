@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:41:53 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/25 10:23:55 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 18:52:36 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int ch_to_sig(int pid, unsigned char c)
 			if (kill(pid, SIGUSR2) == ERROR)
 				return (ERROR);
 		}
-		if (usleep(100) == ERROR)
+		if (usleep(200) == ERROR)
 			return (ERROR);
 		i++;
 	}
