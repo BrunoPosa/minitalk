@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 22:01:26 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 22:04:22 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,5 @@ int	main(void)
 		return (ERROR);
 	while (1)
 		pause();
-	return (write(1, "SUCCESS", 7));
+	return (SUCCESS);
 }
