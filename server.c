@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 20:37:33 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 22:01:26 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static void	str_maker(char c)
 
 static void	sig_to_ch(int b)
 {
-	static	int		i = 0;
-	static 	char	c = '\0';
+	static int	i = 0;
+	static char	c = '\0';
 
 	c = (c << 1) | b;
 	if (++i == 8)
@@ -77,9 +77,14 @@ static void	my_sighandler(int signum)
 
 int	main(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
-	sigemptyset(&sa.sa_mask);
+	if (sigemptyset(&sa.sa_mask) == ERROR)
+		return (ERROR);
+	if (sigaddset(&sa.sa_mask, SIGUSR1) == ERROR)
+		return (ERROR);
+	if (sigaddset(&sa.sa_mask, SIGUSR2) == ERROR)
+		return (ERROR);
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &my_sighandler;
 	if (ft_printf("PID: %d\n", getpid()) == ERROR)
@@ -90,5 +95,5 @@ int	main(void)
 		return (ERROR);
 	while (1)
 		pause();
-	return (0);
+	return (write(1, "SUCCESS", 7));
 }

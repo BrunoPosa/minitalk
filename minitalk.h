@@ -6,17 +6,17 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:26:58 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 19:32:22 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 21:04:21 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-#include "./libft/libft.h"
-#include <stdlib.h> //for malloc(), exit()
-#include <signal.h> //for kill(), sigaction()..
-#include <unistd.h> //for sleep(), getpid(), pause()..
+# include "./libft/libft.h"
+# include <stdlib.h>
+# include <signal.h>
+# include <unistd.h>
 
 # ifndef ERROR
 #  define ERROR -1

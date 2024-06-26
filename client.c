@@ -6,13 +6,13 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:41:53 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 18:52:36 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/26 21:01:50 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static int ch_to_sig(int pid, unsigned char c)
+static int	ch_to_sig(int pid, unsigned char c)
 {
 	int	i;
 
@@ -42,7 +42,10 @@ int	main(int argc, char *argv[])
 	char	*str;
 
 	if (argc != 3 || (argc == 3 && argv[1][0] == '\0'))
-		return (write(1, "Please try with 2 arguments, 1st is PID and 2nd the string to send.\n", 68));
+	{
+		return (write(1, "Please try with 2 arguments, "
+				"1st is PID and 2nd the string to send.\n", 68));
+	}
 	pid = ft_atoi(argv[1]);
 	if (pid == ERROR || pid < 3 || pid > 4194304)
 		return (write(1, "Invalid PID\n", 12));
