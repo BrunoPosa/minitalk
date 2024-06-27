@@ -6,11 +6,9 @@
 #    By: bposa <bposa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/16 16:32:58 by bposa             #+#    #+#              #
-#    Updated: 2024/06/27 15:05:38 by bposa            ###   ########.fr        #
+#    Updated: 2024/06/27 18:37:55 by bposa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# DEFINITIONS:
 
 SERVER	=	server
 
@@ -34,8 +32,6 @@ LIBPATH	=	./libft/
 
 LIB		=	$(LIBPATH)libft.a
 
-# RULES:
-
 all			:	$(SERVER) $(CLIENT)
 
 $(SERVER)	:	$(SOBJCS) $(LIB) $(DEPS)
@@ -50,7 +46,7 @@ $(LIB)		:
 %.o			:	%.c $(DEPS)
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
-debug		:	$(COBJCS) $(SOBJCS) $(LIB)
+debug		:	fclean $(COBJCS) $(SOBJCS) $(LIB)
 	@$(CC) $(CFLAGS) -g -O0 -o $(SERVER) $(SOBJCS) $(LIB)
 	@$(CC) $(CFLAGS) -g -O0 -o $(CLIENT) $(COBJCS) $(LIB)
 

@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/27 16:37:26 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/27 18:43:18 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	sig_to_ch(int b)
 	c = (c << 1) | b;
 	if (++i == 8)
 	{
-		str_maker((char)c);
+		str_maker(c);
 		i = 0;
 		c = '\0';
 	}
@@ -76,29 +76,25 @@ static void	my_sighandler(int signum)
 		sig_to_ch(1);
 	else if (signum == SIGUSR2)
 		sig_to_ch(0);
+	else if (signum == SIGINT)
+		clean_end(SUCCESS);
 }
 
-/*
-	Need to end cleanly on errors and upon SIGINT. Currently leaking
-*/
 int	main(void)
 {
 	struct sigaction	sa;
 
 	ft_bzero(&sa, sizeof(sa));
-	if (sigemptyset(&sa.sa_mask) == ERROR)
-		return (ERROR);
-	if (sigaddset(&sa.sa_mask, SIGUSR1) == ERROR)
-		return (ERROR);
-	if (sigaddset(&sa.sa_mask, SIGUSR2) == ERROR)
+	if (sigaddset(&sa.sa_mask, SIGUSR1) == ERROR
+		|| sigaddset(&sa.sa_mask, SIGUSR2) == ERROR)
 		return (ERROR);
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &my_sighandler;
-	if (ft_printf("PID: %d\n", getpid()) < 0)
+	if (ft_printf("PID: %d\n", getpid()) == ERROR)
 		clean_end(ERROR);
-	if (sigaction(SIGUSR1, &sa, NULL) == ERROR)
-		clean_end(ERROR);
-	if (sigaction(SIGUSR2, &sa, NULL) == ERROR)
+	if (sigaction(SIGUSR1, &sa, NULL) == ERROR
+		|| sigaction(SIGUSR2, &sa, NULL) == ERROR
+		|| sigaction(SIGINT, &sa, NULL) == ERROR)
 		clean_end(ERROR);
 	while (1)
 		pause();
