@@ -6,7 +6,7 @@
 #    By: bposa <bposa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/16 16:32:58 by bposa             #+#    #+#              #
-#    Updated: 2024/06/27 18:37:55 by bposa            ###   ########.fr        #
+#    Updated: 2024/06/27 19:08:53 by bposa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,4 +60,4 @@ fclean		: clean
 	@rm -rf $(SERVER) $(CLIENT)
 	@cd $(LIBPATH) && make fclean
 
-.PHONY		: all re clean fclean
+.PHONY		: all re clean fclean debug

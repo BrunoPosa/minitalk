@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/27 18:43:18 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/27 19:09:29 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	str_maker(char c)
 	}
 	if (c == '\0')
 	{
-		if (ft_printf("%s\n", g_str) < 0)
+		if (ft_printf("%s\n", g_str) == ERROR)
 			clean_end(ERROR);
 		clean_end(KEEP_RUNNING);
 		return ;
