@@ -6,51 +6,54 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:16:43 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 22:04:22 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/27 16:37:26 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	end_all(char **s, int error)
+static char	*g_str = NULL;
+
+static void	clean_end(int status)
 {
-	if (*s)
+	if (g_str)
 	{
-		free(*s);
-		*s = NULL;
+		free(g_str);
+		g_str = NULL;
 	}
-	s = NULL;
-	if (error == ERROR)
-	{
-		exit(1);
-	}
+	if (status == ERROR)
+		exit(EXIT_FAILURE);
+	else if (status == SUCCESS)
+		exit(EXIT_SUCCESS);
 }
 
 static void	str_maker(char c)
 {
-	static char	*str = NULL;
-	char		ch_str[2];
+	char	*temp;
+	char	ch_str[2];
 
+	temp = NULL;
 	ch_str[0] = c;
 	ch_str[1] = '\0';
-	if (str == NULL)
+	if (g_str == NULL)
 	{
-		str = ft_strdup("");
-		if (!str)
-			end_all(&str, ERROR);
+		g_str = ft_strdup("");
+		if (!g_str)
+			clean_end(ERROR);
 	}
 	if (c == '\0')
 	{
-		if (ft_printf("%s\n", str) == ERROR)
-			end_all(&str, ERROR);
-		if (str)
-			free(str);
-		str = NULL;
+		if (ft_printf("%s\n", g_str) < 0)
+			clean_end(ERROR);
+		clean_end(KEEP_RUNNING);
 		return ;
 	}
-	str = ft_strjoin(str, ch_str);
-	if (str == NULL)
-		end_all(&str, ERROR);
+	temp = ft_strjoin(g_str, ch_str);
+	if (temp == NULL)
+		clean_end(ERROR);
+	free(g_str);
+	g_str = temp;
+	temp = NULL;
 }
 
 static void	sig_to_ch(int b)
@@ -75,10 +78,14 @@ static void	my_sighandler(int signum)
 		sig_to_ch(0);
 }
 
+/*
+	Need to end cleanly on errors and upon SIGINT. Currently leaking
+*/
 int	main(void)
 {
 	struct sigaction	sa;
 
+	ft_bzero(&sa, sizeof(sa));
 	if (sigemptyset(&sa.sa_mask) == ERROR)
 		return (ERROR);
 	if (sigaddset(&sa.sa_mask, SIGUSR1) == ERROR)
@@ -87,13 +94,13 @@ int	main(void)
 		return (ERROR);
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &my_sighandler;
-	if (ft_printf("PID: %d\n", getpid()) == ERROR)
-		return (5);
+	if (ft_printf("PID: %d\n", getpid()) < 0)
+		clean_end(ERROR);
 	if (sigaction(SIGUSR1, &sa, NULL) == ERROR)
-		return (ERROR);
+		clean_end(ERROR);
 	if (sigaction(SIGUSR2, &sa, NULL) == ERROR)
-		return (ERROR);
+		clean_end(ERROR);
 	while (1)
 		pause();
-	return (SUCCESS);
+	clean_end(SUCCESS);
 }

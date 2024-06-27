@@ -6,7 +6,7 @@
 /*   By: bposa <bposa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:26:58 by bposa             #+#    #+#             */
-/*   Updated: 2024/06/26 21:04:21 by bposa            ###   ########.fr       */
+/*   Updated: 2024/06/27 13:56:41 by bposa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 
 # ifndef SUCCESS
 #  define SUCCESS 0
+# endif
+
+# ifndef KEEP_RUNNING
+#  define KEEP_RUNNING 42
 # endif
 
 #endif
